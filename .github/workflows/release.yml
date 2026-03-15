@@ -52,10 +52,11 @@ jobs:
 
       - name: Create zip
         run: |
-          cat /tmp/zip_files.txt | xargs zip WikiGachaAutomatorExtension.zip && cp WikiGachaAutomatorExtension.zip WikiGachaAutomatorExtension.xpi
-
+          cat /tmp/zip_files.txt | xargs zip WikiGachaAutomatorExtension.zip
+      - name: Create xpi
+        run: cp WikiGachaAutomatorExtension.zip WikiGachaAutomatorExtension.xpi
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.version.outputs.tag }}
-          files: WikiGachaAutomatorExtension.zip,WikiGachaAutomatorExtension
+          files: WikiGachaAutomatorExtension
