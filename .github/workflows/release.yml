@@ -26,38 +26,32 @@ jobs:
           fi
           echo "tag=v${VERSION}" >> "$GITHUB_OUTPUT"
 
-      - name: Read manifest and collect files
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install web-ext
+        run: npm install -g web-ext
+
+      - name: Sign extension with web-ext
+        env:
+          WEB_EXT_API_KEY: ${{ secrets.WEB_EXT_API_KEY }}
+          WEB_EXT_API_SECRET: ${{ secrets.WEB_EXT_API_SECRET }}
+        run: web-ext sign --source-dir=. --channel=unlisted
+
+      - name: Locate signed xpi
+        id: xpi
         run: |
-          # Extract JS files referenced in manifest.json
-          jq -r '
-            [
-              .content_scripts[]?.js[]?,
-              .background?.scripts[]?,
-              .background?.service_worker?
-            ] | map(select(. != null)) | unique | .[]
-          ' manifest.json > /tmp/js_files.txt
+          XPI_FILE=$(find web-ext-artifacts -name '*.xpi' | head -n 1)
+          if [ -z "$XPI_FILE" ]; then
+            echo "::error::No signed .xpi file found in web-ext-artifacts/"
+            exit 1
+          fi
+          echo "path=${XPI_FILE}" >> "$GITHUB_OUTPUT"
 
-          echo "manifest.json" > /tmp/zip_files.txt
-          while IFS= read -r f; do
-            if [ -f "$f" ]; then
-              echo "$f" >> /tmp/zip_files.txt
-            else
-              echo "::error::File '$f' referenced in manifest.json not found"
-              exit 1
-            fi
-          done < /tmp/js_files.txt
-
-          echo "Collected files:"
-          cat /tmp/zip_files.txt
-
-      - name: Create zip
-        run: |
-          cat /tmp/zip_files.txt | xargs zip WikiGachaAutomatorExtension.zip
-        
-      - name: Create xpi
-        run: cp WikiGachaAutomatorExtension.zip WikiGachaAutomatorExtension.xpi
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.version.outputs.tag }}
-          files: WikiGachaAutomatorExtension.xpi
+          files: ${{ steps.xpi.outputs.path }}
