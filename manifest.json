@@ -3,14 +3,14 @@
   "name": "WikiGachaAuto",
   "version": "1.0",
 
-  "description": "Automate WikiGachaAuto.",
+  "description": "Automate WikiGachaAuto. Available on https://github.com/Marte77/WikiGachaAutomatorExtension ",
 
   "icons": {
     "48": "icons/border-48.png"
   },
 "browser_specific_settings": {
   "gecko": {
-    "id": "borderify@example.com"
+    "id": "eu@martinho.pt"
   }
 },
   "content_scripts": [
@@ -20,4 +20,3 @@
     }
   ]
 }
-
