@@ -3,14 +3,16 @@
   "name": "WikiGachaAuto",
   "version": "1.0",
 
-  "description": "Automate WikiGachaAuto. Available on https://github.com/Marte77/WikiGachaAutomatorExtension ",
+  "description": "Automate WikiGachaAuto.",
 
-  "icons": {
-    "48": "icons/border-48.png"
-  },
 "browser_specific_settings": {
   "gecko": {
-    "id": "eu@martinho.pt"
+    "id": "eu@martinho.pt",
+
+  "data_collection_permissions": {
+        "required": ["none"]
+
+      }
   }
 },
   "content_scripts": [
@@ -20,3 +22,4 @@
     }
   ]
 }
+
