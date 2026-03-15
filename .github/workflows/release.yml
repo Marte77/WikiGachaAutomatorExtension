@@ -1,0 +1,49 @@
+name: Release Extension
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Read manifest and collect files
+        run: |
+          # Extract JS files referenced in manifest.json
+          jq -r '
+            [
+              .content_scripts[]?.js[]?,
+              .background?.scripts[]?,
+              .background?.service_worker?
+            ] | map(select(. != null)) | unique | .[]
+          ' manifest.json > /tmp/js_files.txt
+
+          echo "manifest.json" > /tmp/zip_files.txt
+          while IFS= read -r f; do
+            if [ -f "$f" ]; then
+              echo "$f" >> /tmp/zip_files.txt
+            else
+              echo "::error::File '$f' referenced in manifest.json not found"
+              exit 1
+            fi
+          done < /tmp/js_files.txt
+
+          echo "Collected files:"
+          cat /tmp/zip_files.txt
+
+      - name: Create zip
+        run: |
+          cat /tmp/zip_files.txt | xargs zip extension.zip
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: extension.zip
