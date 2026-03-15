@@ -52,8 +52,7 @@ jobs:
 
       - name: Create zip
         run: |
-          cat /tmp/zip_files.txt | xargs zip WikiGachaAutomatorExtension.zip
-          | cp WikiGachaAutomatorExtension.zip WikiGachaAutomatorExtension.xpi
+          cat /tmp/zip_files.txt | xargs zip WikiGachaAutomatorExtension.zip && cp WikiGachaAutomatorExtension.zip WikiGachaAutomatorExtension.xpi
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
