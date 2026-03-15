@@ -53,6 +53,7 @@ jobs:
       - name: Create zip
         run: |
           cat /tmp/zip_files.txt | xargs zip WikiGachaAutomatorExtension.zip
+        
       - name: Create xpi
         run: cp WikiGachaAutomatorExtension.zip WikiGachaAutomatorExtension.xpi
       - name: Create GitHub Release
