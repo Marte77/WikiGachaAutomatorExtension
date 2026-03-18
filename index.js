@@ -17,7 +17,7 @@ var disablerFunction = function () {
     };
 
 };
-// Source - https://stackoverflow.com/a/42052406
+// Source - https://stackoverflow.com/a/42052406 teste
 // Posted by Daniel Möller, modified by community. See post 'Timeline' for change history
 // Retrieved 2026-03-15, License - CC BY-SA 3.0
 
