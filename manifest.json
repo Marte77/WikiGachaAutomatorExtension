@@ -4,6 +4,7 @@
   "version": "1.1.1",
 
   "description": "Automate WikiGachaAuto.",
+  "commentatings_tester":"teste",
 
 "browser_specific_settings": {
   "gecko": {
