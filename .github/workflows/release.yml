@@ -38,7 +38,7 @@ jobs:
         env:
           WEB_EXT_API_KEY: ${{ secrets.WEB_EXT_API_KEY }}
           WEB_EXT_API_SECRET: ${{ secrets.WEB_EXT_API_SECRET }}
-        run: echo ${#WEB_EXT_API_KEY} ${#WEB_EXT_API_SECRET} && web-ext sign --source-dir=. --channel=listed --api-key=$WEB_EXT_API_KEY --api-secret=$WEB_EXT_API_SECRET
+        run: web-ext sign --source-dir=. --channel=listed --api-key=$WEB_EXT_API_KEY --api-secret=$WEB_EXT_API_SECRET
 
       - name: Locate signed xpi
         id: xpi
